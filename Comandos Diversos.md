@@ -769,7 +769,7 @@ lsattr
 --------------e------- ./python
 ```
 
-###### Comando cut
+#### Comando cut
 
 O comando `cut` é uma ferramenta muito útil em sistemas baseados em Unix/Linux para cortar (ou extrair) partes específicas de linhas de texto de arquivos ou da entrada padrão. Ele é frequentemente usado para cortar colunas de texto de arquivos de texto delimitados por espaço ou tabulação. 
 
@@ -931,8 +931,229 @@ cut -b 1-4 /etc/passwd
 ```
 
 
+#### Comando cmp
+
+O comando `cmp` é usado para comparar dois arquivos byte a byte e relatar as diferenças encontradas entre eles. Se os arquivos forem idênticos, o `cmp` não produzirá nenhuma saída; caso contrário, ele mostrará o deslocamento e o byte onde a primeira diferença ocorre. É útil para verificar se dois arquivos são iguais ou identificar onde as diferenças estão localizadas entre eles.
+
+**Exemplo**:
+
+```shell
+$ echo "linha 1" > teste
+$ cp teste teste-copia
+$ cmp teste teste
+$ cmp teste teste-copia 
+$ echo linha2 >> teste-copia
+$ cmp teste teste-copia
+```
+
+1. `echo "linha 1" > teste`: Cria um arquivo chamado "teste" e escreve nele a linha "linha 1".
+2. `cp teste teste-copia`: Faz uma cópia do arquivo "teste" chamada "teste-copia".
+3. `cmp teste teste`: Compara o arquivo "teste" consigo mesmo. Como são idênticos, não há saída, indicando que os arquivos são iguais.
+4. `cmp teste teste-copia`: Compara o arquivo "teste" com sua cópia "teste-copia". Novamente, como são idênticos, não há saída.
+5. `echo linha2 >> teste-copia`: Acrescenta a linha "linha2" ao final do arquivo "teste-copia".
+6. `cmp teste teste-copia`: Agora, ao comparar os arquivos novamente, o `cmp` detecta que eles são diferentes e relata onde a primeira diferença é encontrada.
+
+Este exemplo demonstra como o `cmp` é usado para verificar se dois arquivos são idênticos ou onde as diferenças estão localizadas entre eles.
+
+| Comando    | Descrição                                                                                      |
+|------------|------------------------------------------------------------------------------------------------|
+| `cmp -s`   | Retorna apenas um código de saída. Se os arquivos forem iguais, o código de saída será 0; se houver diferenças, será 1. O resultado pode ser verificado na variável `$?`. |
+
+
+#### Comando diff
+
+O comando `diff` é usado para comparar o conteúdo de dois arquivos linha por linha e mostrar as diferenças entre eles. Ele mostra as linhas que são diferentes e onde essas diferenças ocorrem. O `diff` é frequentemente usado para verificar as alterações feitas em um arquivo em relação a uma versão anterior ou para comparar dois arquivos para sincronização ou verificação de integridade.
+
+**Sintaxe básica**:
+
+```
+diff arquivo1 arquivo2
+```
+
+| Comando              | Descrição                                                                                                                                                            |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `diff arquivo1 arquivo2` | Compara o conteúdo de `arquivo1` e `arquivo2` linha por linha e mostra as diferenças encontradas.                                                                    |
+| `diff -u`            | Mostra a saída com a diferença entre os arquivos de forma mais legível, utilizando um formato unificado.                                                           |
+| `diff -r`            | Mostra a diferença entre os conteúdos de diretórios de forma recursiva, comparando todos os arquivos e subdiretórios dentro deles.                                 |
+
+#### Comando path
+
+O comando `patch` é usado para aplicar as diferenças entre dois arquivos, geralmente representadas em um arquivo no formato de patch, a um arquivo original. Isso é comumente usado em colaboração de desenvolvimento, onde uma pessoa faz alterações em um arquivo, gera um patch descrevendo essas alterações e, em seguida, outra pessoa pode aplicar esse patch ao arquivo original para incorporar essas alterações.
+
+Aqui está a explicação do comando que você forneceu:
+
+
+| Opção | Descrição                                                                                                                                                                                                                                                     |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| patch | O próprio comando para aplicar patches.                                                                                                                                                                                                                       |
+| `-p1` | Especifica o nível de segmentação a ser removido do caminho do arquivo contido no patch. O número 1 aqui indica que o caminho do arquivo no patch deve ser modificado, removendo o primeiro componente do caminho.                                            |
+| `-N`  | Tenta aplicar o patch, mesmo se o arquivo original não existir. Isso é útil quando você está aplicando patches a vários diretórios e nem todos eles contêm todos os arquivos originais. Sem essa opção, o patch falharia se o arquivo original não existisse. |
+| `-R`  | Reverte o patch aplicado, desfazendo as alterações feitas pelo patch. Essa opção é útil para restaurar o estado original dos arquivos após a aplicação de um patch.                                                                                           |
+
+`</tmp/diferencas.path`: Especifica o arquivo de patch a ser aplicado. Nesse caso, o patch está sendo fornecido por meio da entrada padrão (`<`), com o arquivo localizado em `/tmp/diferencas.path`.
+
+Em resumo, esse comando aplica as diferenças descritas no arquivo de patch `/tmp/diferencas.path` aos arquivos originais, ajustando os caminhos dos arquivos conforme necessário e ignorando a ausência de arquivos originais.
+#### Comando whereis
+
+O comando `whereis` é utilizado para localizar os arquivos binários, fontes e páginas de manual associados a um determinado comando. Ele retorna o caminho dos arquivos relacionados ao comando especificado.
+
+**Exemplo:**
+```
+whereis ls
+```
+
+**Saída:**
+```
+ls: /usr/bin/ls /usr/share/man/man1/ls.1.gz
+```
+
+- `/usr/bin/ls`: Este é o caminho para o executável do comando `ls`.
+- `/usr/share/man/man1/ls.1.gz`: Este é o caminho para o arquivo de manual (`man`) do comando `ls`.
+
+Essa saída indica que o comando `ls` está localizado em `/usr/bin/ls` e o arquivo de manual está localizado em `/usr/share/man/man1/ls.1.gz`. Essas informações são úteis para encontrar a localização dos arquivos associados a um comando no sistema.
 
 
 
+## Execução de programas
+
+#### Variavel PATH
+
+O "path" é o conjunto de diretórios onde o sistema operacional procura por arquivos executáveis e comandos quando você os digita em um terminal. Este caminho é armazenado na variável de ambiente PATH. Para visualizar o conteúdo desta variável em um terminal no Unix/Linux, você pode usar o comando `echo $PATH`.
+
+Por exemplo, um caminho típico como "/usr/local/bin:/usr/bin:/bin:/usr/bin/X11" indica que quando você digita um comando como "ls", o interpretador de comandos procura pelo programa "ls" primeiro no diretório "/usr/local/bin". Se não encontrar lá, continua procurando nos diretórios subsequentes, como "/usr/bin", "/bin", e assim por diante, até que o arquivo seja encontrado. Esse processo ocorre sequencialmente em cada diretório listado no PATH.
+
+Caso o interpretador de comandos chegue até o último diretório do path e não encontre o arquivo/comando
+digitado, é mostrada a seguinte mensagem:
+
+```shell
+bash: ls: command not found (comando não encontrado)
+```
+
+O caminho de diretórios, conhecido como PATH, é configurado durante a instalação do Linux, mas pode ser modificado no arquivo `/etc/profile`. Se você deseja alterar o PATH para todos os usuários, o arquivo `/etc/profile` é o local mais apropriado, pois é lido por todos os usuários durante o processo de login.
+
+Se um arquivo ou comando não estiver localizado em nenhum dos diretórios listados no PATH, você pode executá-lo usando `./` antes do comando para indicar que ele está no diretório atual.
+
+Para alterar o PATH apenas para um usuário específico, você pode modificar o arquivo `.bash_profile` em seu diretório de usuário (home).
+
+É importante observar que, por motivos de segurança, não é recomendado incluir o diretório atual (`$PWD`) no PATH.
 
 
+#### Execução em primeiro e segundo plano
+
+Existem duas formas de executar um programa em um sistema:
+
+1. **Primeiro Plano (Foreground)**: Neste modo, você deve esperar que o programa atual termine sua execução antes de poder inserir um novo comando. O terminal permanece ocupado até que o programa seja concluído, e apenas então o aviso de comando é exibido novamente.
+
+2. **Segundo Plano (Background)**: Aqui, você pode iniciar um programa sem precisar esperar que ele termine para inserir novos comandos. Após iniciar um programa em segundo plano, você recebe um número de identificação de processo (PID) e o aviso de comando é novamente mostrado, permitindo o uso normal do sistema. O programa continua sendo executado internamente. Quando terminar, o sistema retorna uma mensagem de pronto, acompanhada do PID do processo concluído.
+
+Para iniciar um programa em primeiro plano, basta digitar seu nome normalmente. Para executá-lo em segundo plano, acrescente o caractere "&" ao final do comando.
+
+É importante observar que, mesmo que um usuário saia do sistema, um programa iniciado em segundo plano continuará sendo executado até ser concluído ou finalizado pelo usuário que o iniciou (ou pelo usuário root).
+
+Exemplo: `find / -name boot.b &`
+
+Neste exemplo, o comando `find` será executado em segundo plano, liberando o sistema para outras tarefas. Após a conclusão do comando `find`, uma mensagem será exibida.
+
+Os comandos podem ser executados em sequência, um após o término do outro, se os separarmos com ";". Por exemplo:
+
+```bash
+echo primeiro; echo segundo; echo terceiro
+```
+
+Neste caso, os comandos "echo primeiro", "echo segundo" e "echo terceiro" serão executados sequencialmente, um após o término do outro. Cada comando será executado independentemente do resultado dos comandos anteriores.
+
+
+
+#### Comando ps
+
+| Opção         | Descrição                                                                                                   |
+|---------------|-------------------------------------------------------------------------------------------------------------|
+| `a`           | Mostra os processos criados por você e por outros usuários do sistema.                                      |
+| `x`           | Mostra processos que não estão associados ao terminal atual.                                                 |
+| `u`           | Mostra o nome de usuário que iniciou o processo e a hora em que o processo foi iniciado.                    |
+| `m`           | Mostra a quantidade de memória ocupada por cada processo em execução.                                        |
+| `f`           | Exibe a árvore de execução de comandos, ou seja, os comandos que são chamados por outros comandos.          |
+| `e`           | Exibe as variáveis de ambiente no momento da inicialização do processo.                                      |
+| `w`           | Mostra a continuação da linha atual na próxima linha, em vez de cortar o restante que não couber na tela.   |
+| `--sort:[coluna]` | Organiza a saída do comando `ps` de acordo com a coluna escolhida (por exemplo, pid, utime, ppid, rss, size, user, priority). Pode ser especificada uma listagem em ordem inversa, adicionando `-` antes da coluna. |
+
+Essas opções podem ser combinadas para fornecer uma listagem mais completa dos processos em execução. O comando `ps` não requer hífen para especificar as opções, pois não utiliza opções longas ou parâmetros.
+
+***Exemplos de uso incluem** `ps`, `ps ax|grep inetd`, `ps auxf`, `ps auxw`.*
+
+#### Comando top
+O comando `top` é uma ferramenta poderosa para monitorar o sistema em tempo real, exibindo informações detalhadas sobre os programas em execução, o uso de CPU e memória, disponibilidade de recursos e muito mais.
+
+##### Uso Básico:
+
+| Ação                     | Descrição                                                                                          |
+|--------------------------|----------------------------------------------------------------------------------------------------|
+| Execução do `top`        | Basta digitar `top` no terminal para iniciar a exibição em tempo real dos processos.              |
+| Sair do `top`            | Pressione a tecla `q` para sair do programa.                                                      |
+
+##### Opções do Comando `top`:
+
+| Opção      | Descrição                                                                                                 |
+|------------|-----------------------------------------------------------------------------------------------------------|
+| `-d [tempo]` | Atualiza a tela após um intervalo de tempo especificado em segundos.                                     |
+| `-s`       | Inicia o top no modo seguro.                                                                              |
+| `-i`       | Inicia o top ignorando o tempo ocioso de processos zumbis.                                                |
+| `-c`       | Mostra a linha de comando ao invés do nome do programa.                                                    |
+
+##### Teclas Úteis:
+
+| Tecla/Ação    | Descrição                                                                                                    |
+|---------------|--------------------------------------------------------------------------------------------------------------|
+| **Espaço**    | Atualiza imediatamente a tela.                                                                               |
+| **CTRL+L**    | Limpa e atualiza a tela.                                                                                     |
+| **h**         | Exibe a tela de ajuda do programa, mostrando todas as teclas de atalho disponíveis.                         |
+| **i**         | Ignora o tempo ocioso de processos zumbis.                                                                   |
+| **q**         | Sai do programa.                                                                                             |
+| **k**         | Finaliza um processo semelhante ao comando kill. Você será solicitado a fornecer o número de identificação do processo (PID). Este comando não está disponível quando o top é executado com a opção -s. |
+| **n**         | Altera o número de linhas mostradas na tela. Se 0 for especificado, toda a tela será usada para listar os processos. |
+
+#####  Mais Informações:
+
+- **Ajuda do `top`**: Dentro do programa, pressione a tecla `h` para obter ajuda ou consulte a página de manual (man top) para mais detalhes.
+
+O `top` é uma ferramenta valiosa para monitorar e diagnosticar o desempenho do sistema em tempo real, fornecendo uma visão abrangente dos processos em execução e dos recursos do sistema.
+
+
+### Parando Momentaneamente a Execução de um Processo
+
+Para parar a execução de um processo que está rodando em primeiro plano, basta pressionar as teclas `CTRL+Z`. O programa em execução será pausado e será mostrado o número de seu job e o aviso de comando.
+
+Para retomar a execução de um comando pausado, use os comandos `fg` ou `bg`.
+
+### Comando `jobs`
+
+O comando `jobs` mostra os processos que estão pausados ou rodando em segundo plano. Processos em segundo plano são iniciados usando o símbolo "&" no final da linha de comando ou através do comando `bg`.
+
+### Comandos `fg` e `bg`
+
+- **`fg`**: Permite fazer um programa rodando em segundo plano ou pausado rodar em primeiro plano. Você deve usar o comando `jobs` para obter o número do processo rodando em segundo plano ou pausado, e este número será passado como parâmetro para o comando `fg`.
+  - Exemplo: `fg [número]`. Onde `[número]` é o número obtido através do comando `jobs`. Caso seja usado sem parâmetros, o `fg` utilizará o último programa pausado (o maior número obtido com o comando `jobs`).
+- **`bg`**: Permite fazer um programa rodando em primeiro plano ou pausado rodar em segundo plano. Para fazer um programa em primeiro plano rodar em segundo, é necessário primeiro interromper a execução do comando.
+
+### Finalizando um Processo Pausado
+
+Um processo pausado pode ser finalizado usando o comando `kill %[num]`, onde `[num]` é o número do processo obtido pelo comando `jobs`.
+
+Esses comandos oferecem controle flexível sobre a execução de processos no sistema, permitindo pausar, retomar e gerenciar a execução de programas.
+#### Comando pstree
+
+*O comando `pstree` é uma ferramenta de linha de comando em sistemas baseados em Unix e Linux que exibe uma representação hierárquica dos processos em execução no sistema. Ele mostra os processos em forma de árvore, onde cada processo é listado abaixo de seu processo pai, facilitando a visualização da relação entre os processos.*
+
+
+| Comando           | Descrição                                                                                                         |
+|-------------------|-------------------------------------------------------------------------------------------------------------------|
+| `pstree`          | Retorna a árvore de processos sendo executados no sistema operacional de forma mais gráfica.                      |
+| `pstree -A`       | Retorna a árvore de processos usando caracteres ASCII 2.                                                         |
+| `pstree -c`       | Mostra toda a estrutura incluindo os processos pai.                                                              |
+| `pstree -h`       | Mostra os processos pai e os ancestrais.                                                                         |
+| `pstree -p`       | Retorna mostrando o PID dos processos.                                                                          |
+| `pstree -H 352`   | Retorna em destaque o processo após receber o PID 352.                                                          |
+| `pstree -u`       | Retorna o UID do processo.                                                                                       |
+| `pstree -g`       | Mostra o grupo de execução dos processos.                                                                        |
+
+##### Comando kill 
