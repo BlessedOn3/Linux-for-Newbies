@@ -1134,12 +1134,25 @@ O comando `jobs` mostra os processos que estão pausados ou rodando em segundo p
 - **`fg`**: Permite fazer um programa rodando em segundo plano ou pausado rodar em primeiro plano. Você deve usar o comando `jobs` para obter o número do processo rodando em segundo plano ou pausado, e este número será passado como parâmetro para o comando `fg`.
   - Exemplo: `fg [número]`. Onde `[número]` é o número obtido através do comando `jobs`. Caso seja usado sem parâmetros, o `fg` utilizará o último programa pausado (o maior número obtido com o comando `jobs`).
 - **`bg`**: Permite fazer um programa rodando em primeiro plano ou pausado rodar em segundo plano. Para fazer um programa em primeiro plano rodar em segundo, é necessário primeiro interromper a execução do comando.
+  Para permitir que um programa em execução em primeiro plano ou pausado seja executado em segundo plano, você precisa primeiro interromper a execução do programa pressionando `CTRL+Z`. Isso irá pausar o programa e mostrar o número da tarefa interrompida.
+
+Para retomar a execução do programa em segundo plano, você pode usar o comando `bg [número]`, onde `[número]` é o número do programa obtido quando você pressionou as teclas `CTRL+Z` ou através do comando `jobs`.
+
+Por exemplo:
+```
+bg 106
+```
+
+Este comando iniciará a execução do programa em segundo plano.
 
 ### Finalizando um Processo Pausado
 
 Um processo pausado pode ser finalizado usando o comando `kill %[num]`, onde `[num]` é o número do processo obtido pelo comando `jobs`.
 
 Esses comandos oferecem controle flexível sobre a execução de processos no sistema, permitindo pausar, retomar e gerenciar a execução de programas.
+
+
+
 #### Comando pstree
 
 *O comando `pstree` é uma ferramenta de linha de comando em sistemas baseados em Unix e Linux que exibe uma representação hierárquica dos processos em execução no sistema. Ele mostra os processos em forma de árvore, onde cada processo é listado abaixo de seu processo pai, facilitando a visualização da relação entre os processos.*
@@ -1156,4 +1169,57 @@ Esses comandos oferecem controle flexível sobre a execução de processos no si
 | `pstree -u`       | Retorna o UID do processo.                                                                                       |
 | `pstree -g`       | Mostra o grupo de execução dos processos.                                                                        |
 
-##### Comando kill 
+##### Comando kill/kilall
+
+Aqui está a informação melhorada e organizada em tabela Markdown:
+
+##### Comando `kill`
+
+| Opção      | Descrição                                                                                                     |
+|------------|---------------------------------------------------------------------------------------------------------------|
+| `[número]` | Número de identificação do processo obtido com o comando `ps`. Também pode ser o número após o sinal de % obtido pelo comando `jobs` para matar uma tarefa interrompida. |
+| `[sinal]`  | Sinal que será enviado ao processo. Se omitido, usa -15 como padrão.                                           |
+| `-9`       | Envia um sinal de destruição ao processo ou programa. Ele é terminado imediatamente sem chances de salvar os dados ou apagar os arquivos temporários criados por ele.          |
+
+##### Comando `killall`
+
+| Opção      | Descrição                                                                                                   |
+|------------|-------------------------------------------------------------------------------------------------------------|
+| `[processo]` | Nome do processo que deseja finalizar.                                                                     |
+| `[sinal]`  | Sinal que será enviado ao processo (pode ser obtido usando a opção -l).                                     |
+| `-i`       | Pede confirmação sobre a finalização do processo.                                                           |
+| `-l`       | Lista o nome de todos os sinais conhecidos.                                                                 |
+| `-q`       | Ignora a existência do processo.                                                                            |
+| `-v`       | Retorna se o sinal foi enviado com sucesso ao processo.                                                     |
+| `-w`       | Finaliza a execução do killall somente após finalizar todos os processos.                                   |
+
+##### Comando `killall5`
+
+| Sintaxe        | Descrição                                                    |
+|----------------|--------------------------------------------------------------|
+| `killall5 [sinal]` | Envia um sinal de finalização para todos os processos em execução.   |
+
+##### Sinais do Sistema
+
+| Sinal | Valor       | Ação | Comentário                                                    |
+|-------|-------------|------|---------------------------------------------------------------|
+| HUP   | 1           | A    | Travamento detectado no terminal de controle ou finalização do processo controlado. |
+| INT   | 2           | A    | Interrupção através do teclado.                                |
+| QUIT  | 3           | C    | Sair através do teclado.                                      |
+| ILL   | 4           | C    | Instrução Ilegal.                                             |
+| ABRT  | 6           | C    | Sinal de abortar enviado pela função abort.                   |
+| FPE   | 8           | C    | Exceção de ponto Flutuante.                                   |
+| KILL  | 9           | AEF  | Sinal de destruição do processo.                              |
+| SEGV  | 11          | C    | Referência Inválida de memória.                               |
+| PIPE  | 13          | A    | Pipe Quebrado: escreveu para o pipe sem leitores.             |
+| ALRM  | 14          | A    | Sinal do Temporizador da chamada do sistema alarm.            |
+| TERM  | 15          | A    | Sinal de Término.                                             |
+| USR1  | 30,10,16   | A    | Sinal definido pelo usuário 1.                                |
+| USR2  | 31,12,17   | A    | Sinal definido pelo usuário 2.                                |
+| CHLD  | 20,17,18   | B    | Processo filho parado ou terminado.                           |
+| CONT  | 19,18,25   | -    | Continuar a execução, se interrompido.                        |
+| STOP  | 17,19,23   | DEF  | Interromper processo.                                         |
+| TSTP  | 18,20,24   | D    | Interromper digitação no terminal.                            |
+| TTIN  | 21,21,26   | D    | Entrada do terminal para o processo em segundo plano.          |
+| TTOU  | 22,22,27   | D    | Saída do terminal para o processo em segundo plano.           |
+
